@@ -1,6 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import videoRoutes from "./routes/video.js";
 
 const app = express();
 dotenv.config();
@@ -15,6 +16,8 @@ const connect = () => {
         throw err;
         });
 }
+
+app.use("/api/videos", videoRoutes)
 
 app.listen(8800, () => {
     connect()
