@@ -1,1 +1,0 @@
-# eon-media-project
