@@ -1,4 +1,4 @@
-import { useState } from "react";
+//import { useState } from "react";
 import styled, { ThemeProvider } from "styled-components";
 import Navbar from "./components/Navbar";
 import { darkTheme } from "./utils/Theme";
@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Video from "./pages/Video";
 import Upload from "./pages/Upload";
+import BigScreen from './components/BigScreen';
 
 const Container = styled.div`
   display: flex;
@@ -27,22 +28,32 @@ function App() {
         <BrowserRouter>
           <Main>
             <Navbar />
-            <Wrapper>
-              <Routes>
-                <Route path="/">
-                  <Route index element={<Home />} />
-                  <Route path="upload" element={<Upload />} />
-                  <Route path="video">
-                    <Route path=":id" element={<Video />} />
-                  </Route>
-                </Route>
-              </Routes>
-            </Wrapper>
+            {/* Move BigScreen inside the Routes to only display on the home page */}
+            <Routes>
+              <Route path="/" element={
+                <>
+                  <BigScreen /> {/* BigScreen is now part of the home route */}
+                  <Wrapper>
+                    <Home />
+                  </Wrapper>
+                </>
+              } />
+              <Route path="upload" element={
+                <Wrapper>
+                  <Upload />
+                </Wrapper>
+              } />
+              <Route path="video/:id" element={
+                <Wrapper>
+                  <Video />
+                </Wrapper>
+              } />
+            </Routes>
           </Main>
         </BrowserRouter>
       </Container>
     </ThemeProvider>
   );
-}
+};
 
 export default App;
