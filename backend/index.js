@@ -3,13 +3,13 @@ const fileUpload = require('express-fileupload');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const GridFSBucket = require('mongodb').GridFSBucket;
-const Video = require('./models/videoSchema'); 
+const Video = require('./models/Video.js'); 
 
 const app = express();
 app.use(fileUpload());
 app.use(cors());
 
-const mongoURI = 'mongodb://localhost:27017/EonMedia';
+const mongoURI = 'mongodb://localhost:27017/eon-project';
 
 // Connect to MongoDB using Mongoose
 mongoose.connect(mongoURI)

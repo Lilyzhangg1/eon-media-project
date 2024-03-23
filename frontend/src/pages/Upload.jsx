@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
   display: flex;
@@ -58,6 +59,7 @@ const VideoPlayer = styled.video`
 `;
 
 const Upload = () => {
+  const navigate = useNavigate();
   const [videoUrl, setVideoUrl] = useState(null);
   const [title, setTitle] = useState(""); // State for video title
 
@@ -73,19 +75,26 @@ const Upload = () => {
     event.preventDefault();
     const formData = new FormData(event.target); // Using the form's event.target to build FormData
     formData.append("title", title); // Include the title in the formData
-
+  
     try {
       const response = await axios.post("/upload", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
-      const uploadedVideoUrl = response.data.videoUrl;
-      setVideoUrl(uploadedVideoUrl);
+  
+      // Assuming the backend returns the video metadata including its filename
+      // and the server is configured to serve videos from /video/<filename>
+      if (response.data && response.data.video) {
+        const uploadedFilename = response.data.video.filename;
+        const uploadedVideoUrl = `${window.location.origin}/video/${uploadedFilename}`;
+        setVideoUrl(uploadedVideoUrl);
+        navigate('/'); // Navigate back to home after setting the video URL
+      }
     } catch (error) {
       console.error("Error uploading video:", error);
     }
-  };
+  };  
 
   return (
     <Container>
