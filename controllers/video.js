@@ -6,44 +6,45 @@ export const addVideo = async (req, next) => {
     } catch (err) {
         next(err);
     }
-}
+};
 
 export const updateVideo = async (req, next) => {
     try {
         const video = await Video.findById(req.params.id)
         if(!video) return next(createError(404, "Video not found!"))
-        res.status(200).json(updatedVideo)
+        res.status(200).json(updatedVideo);
     } catch (err) {
         next(err);
     }
-}
+};
 
 export const deleteVideo = async (req, next) => {
     try {
         const video = await Video.findById(req.params.id)
         if(!video) return next(createError(404, "Video not found!"))
-        res.status(200).json(updatedVideo)
+        res.status(200).json(updatedVideo);
     } catch (err) {
         next(err);
     }
-}
+};
 
 export const getVideo = async (req, next) => {
     try {
         const video = await Video.findById(req.params.id)
-        res.status(200).json(video)
+        res.status(200).json(video);
     } catch (err) {
         next(err);
     }
-}
+};
 
-export const addView = async (req, next) => {
+export const search = async (req, next) => {
+    const query = req.query.q;
     try {
-        await Video.findbyIdAndUpdate(req.params.id, {
-            $inc:{views:1}
-        })
-        res.status(200).json("The view has been increased")
+        const videos = await Video.find({
+            title: {$regex: query, $option: "i"
+        }}).limit(40);
+        res.status(200).json(videos);
     } catch (err) {
-        next(err);
+        next (err);
     }
-}
+};

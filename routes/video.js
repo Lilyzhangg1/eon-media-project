@@ -9,7 +9,5 @@ router.post("/", addVideo)
 router.put("/:id", addVideo)
 router.delete("/:id", addVideo)
 router.get("/find/:id", addVideo)
-router.put("/view/:id", addView)
-
 
 export default router;
