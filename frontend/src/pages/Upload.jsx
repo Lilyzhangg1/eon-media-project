@@ -22,7 +22,6 @@ const Wrapper = styled.div`
   gap: 10px;
 `;
 
-
 const Title = styled.h1`
   font-size: 24px;
 `;
@@ -73,27 +72,29 @@ const Upload = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const formData = new FormData(event.target); // Using the form's event.target to build FormData
-    formData.append("title", title); // Include the title in the formData
+    const formData = new FormData(); // Create a new FormData object
+    const fileInput = document.querySelector('input[type="file"]'); // Select the file input
+    formData.append("video", fileInput.files[0]); // Append the selected file
+    formData.append("title", title); // Append the title
   
-    try {
-      const response = await axios.post("/upload", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-  
-      // Assuming the backend returns the video metadata including its filename
-      // and the server is configured to serve videos from /video/<filename>
-      if (response.data && response.data.video) {
-        const uploadedFilename = response.data.video.filename;
+    fetch('http://localhost:5050/upload', {
+      method: 'POST',
+      body: formData,
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Success:', data);
+      if (data && data.video) {
+        const uploadedFilename = data.video.filename;
         const uploadedVideoUrl = `${window.location.origin}/video/${uploadedFilename}`;
         setVideoUrl(uploadedVideoUrl);
         navigate('/'); // Navigate back to home after setting the video URL
       }
-    } catch (error) {
-      console.error("Error uploading video:", error);
-    }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert('Upload failed');
+    });
   };  
 
   return (
