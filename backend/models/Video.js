@@ -1,10 +1,6 @@
 import mongoose from "mongoose";
 
 const VideoSchema = new mongoose.Schema({
-    userId: {
-        type: String,
-        required: true,
-    },
     title: {
         type: String,
         required: true,
@@ -17,8 +13,6 @@ const VideoSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-},
-    { timestamps: true }
-);
+}, { timestamps: true });
 
 export default mongoose.model("Video", VideoSchema);

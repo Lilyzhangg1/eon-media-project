@@ -1,4 +1,3 @@
-import express from "express";
 import { addVideo } from "../controllers/video.js";
 import {  } from "../controllers/video.js";
 
