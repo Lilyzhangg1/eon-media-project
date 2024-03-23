@@ -19,6 +19,13 @@ const CarouselContainer = styled.div`
   margin-bottom: 20px; /* Add margin between rows */
 `;
 
+const Subheading = styled.h3`
+  color: white;
+  margin-bottom: 15px; /* Adjust the space between the subheading and the slider */
+  text-align: left; 
+`;
+
+
 const Home = () => {
   // Settings for react-slick slider
   const settings = {
@@ -55,22 +62,7 @@ const Home = () => {
   return (
     <Container>
       <CarouselContainer>
-        <Slider {...settings}>
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-        </Slider>
-      </CarouselContainer>
-      <CarouselContainer>
+      <Subheading>Recently Uploaded</Subheading>
         <Slider {...settings}>
           <Card />
           <Card />

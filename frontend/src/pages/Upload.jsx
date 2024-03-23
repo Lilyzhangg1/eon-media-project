@@ -16,10 +16,11 @@ const Wrapper = styled.div`
   align-items: center;
   flex-direction: column;
   background-color: ${({ theme }) => theme.bgLighter};
-  border: 1px solid ${({ theme }) => theme.soft};
+  border: 1px solid red;
   padding: 20px 50px;
   gap: 10px;
 `;
+
 
 const Title = styled.h1`
   font-size: 24px;
@@ -31,6 +32,7 @@ const Input = styled.input`
   padding: 10px;
   background-color: transparent;
   color: ${({ theme }) => theme.text};
+  width: 100%; /* Ensure full width for alignment */
 `;
 
 const Button = styled.button`
@@ -41,8 +43,14 @@ const Button = styled.button`
   cursor: pointer;
   background-color: ${({ theme }) => theme.soft};
   color: ${({ theme }) => theme.textSoft};
-  margin-top: 10px; /* Adjusted for spacing */
+  margin-top: 10px;
+
+  &:hover {
+    background-color: red;
+    color: white;
+  }
 `;
+
 
 const VideoPlayer = styled.video`
   width: 100%;
@@ -51,25 +59,27 @@ const VideoPlayer = styled.video`
 
 const Upload = () => {
   const [videoUrl, setVideoUrl] = useState(null);
+  const [title, setTitle] = useState(""); // State for video title
 
   const handleFileChange = (event) => {
-    // Handle the file with event.target.files[0]
     console.log(event.target.files[0]);
+  };
+
+  const handleTitleChange = (event) => {
+    setTitle(event.target.value); // Update the title state
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const formData = new FormData();
-    formData.append("video", event.target.files[0]);
+    const formData = new FormData(event.target); // Using the form's event.target to build FormData
+    formData.append("title", title); // Include the title in the formData
 
     try {
-      // Make a POST request to the backend to upload the video
       const response = await axios.post("/upload", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
-      // Get the URL of the uploaded video from the response
       const uploadedVideoUrl = response.data.videoUrl;
       setVideoUrl(uploadedVideoUrl);
     } catch (error) {
@@ -80,9 +90,20 @@ const Upload = () => {
   return (
     <Container>
       <Wrapper>
-        <Title>Upload Your File</Title>
+        <Title>Upload Your Video</Title>
         <form onSubmit={handleSubmit}>
-          <Input type="file" onChange={handleFileChange} />
+          <Input
+            type="text"
+            placeholder="Enter video title..."
+            value={title}
+            onChange={handleTitleChange}
+            required
+          />
+          <Input
+            type="file"
+            onChange={handleFileChange}
+            required
+          />
           <Button type="submit">Upload</Button>
         </form>
         {videoUrl && (
