@@ -1,24 +1,47 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import styled, { ThemeProvider } from "styled-components";
+import Navbar from "./components/Navbar";
+import { darkTheme } from "./utils/Theme";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import Video from "./pages/Video";
+import Upload from "./pages/Upload";
+
+const Container = styled.div`
+  display: flex;
+`;
+
+const Main = styled.div`
+  flex: 1;
+  background-color: ${({ theme }) => theme.bg};
+`;
+
+const Wrapper = styled.div`
+  padding: 22px 96px;
+`;
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={darkTheme}>
+      <Container>
+        <BrowserRouter>
+          <Main>
+            <Navbar />
+            <Wrapper>
+              <Routes>
+                <Route path="/">
+                  <Route index element={<Home />} />
+                  <Route path="upload" element={<Upload />} />
+                  <Route path="video">
+                    <Route path=":id" element={<Video />} />
+                  </Route>
+                </Route>
+              </Routes>
+            </Wrapper>
+          </Main>
+        </BrowserRouter>
+      </Container>
+    </ThemeProvider>
   );
 }
 
